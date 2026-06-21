@@ -1,6 +1,6 @@
 [package]
 name = "htop-rust-for-win"
-version = "0.0.1"
+version = "0.0.3"
 edition = "2021"
 description = "htop-like system monitor for Windows"
 

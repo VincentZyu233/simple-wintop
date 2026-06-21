@@ -22,14 +22,16 @@ pub fn draw(frame: &mut Frame, data: &SystemData) {
     let horz = Layout::default()
         .direction(Direction::Horizontal)
         .constraints([
+            Constraint::Length(1),
             Constraint::Min(20),
             Constraint::Length(6),
             Constraint::Min(20),
+            Constraint::Length(1),
         ])
         .split(area);
 
-    draw_left_column(frame, horz[0], data);
-    draw_right_column(frame, horz[2], data);
+    draw_left_column(frame, horz[1], data);
+    draw_right_column(frame, horz[3], data);
 }
 
 fn draw_left_column(frame: &mut Frame, area: Rect, data: &SystemData) {
@@ -76,7 +78,6 @@ fn draw_right_column(frame: &mut Frame, area: Rect, data: &SystemData) {
     }
     rows.push(Constraint::Length(1));
     rows.push(Constraint::Length(1));
-    rows.push(Constraint::Length(1));
     rows.push(Constraint::Min(0));
 
     let chunks = Layout::default()
@@ -95,12 +96,8 @@ fn draw_right_column(frame: &mut Frame, area: Rect, data: &SystemData) {
         chunks[off],
     );
     frame.render_widget(
-        Paragraph::new(Line::from(info::render_load_avg(&data.load_avg, chunks[off + 1].width as usize))),
+        Paragraph::new(Line::from(info::render_uptime(&data.uptime, chunks[off + 1].width as usize))),
         chunks[off + 1],
-    );
-    frame.render_widget(
-        Paragraph::new(Line::from(info::render_uptime(&data.uptime, chunks[off + 2].width as usize))),
-        chunks[off + 2],
     );
 }
 

@@ -18,18 +18,14 @@ fn format_uptime(duration: Duration) -> String {
     }
 }
 
+/// Tasks: 446; 414 running
+///   ^label   ^num  ^status
 pub fn render_tasks(tasks: &TasksData, width: usize) -> Vec<Span<'static>> {
     let mut spans: Vec<Span<'static>> = Vec::new();
 
-    let label = format!("Tasks: {}; {} running", tasks.total, tasks.running);
-    if width < label.len() {
-        spans.push(Span::styled(label, Style::default().fg(Color::White)));
-        return spans;
-    }
-
     spans.push(Span::styled(
         "Tasks: ",
-        Style::default().fg(Color::Cyan),
+        Style::default().fg(Color::DarkCyan),
     ));
 
     spans.push(Span::styled(
@@ -39,7 +35,7 @@ pub fn render_tasks(tasks: &TasksData, width: usize) -> Vec<Span<'static>> {
             .add_modifier(Modifier::BOLD),
     ));
 
-    spans.push(Span::styled("; ", Style::default().fg(Color::White)));
+    spans.push(Span::styled("; ", Style::default().fg(Color::DarkCyan)));
 
     spans.push(Span::styled(
         format!("{}", tasks.running),
@@ -56,48 +52,18 @@ pub fn render_tasks(tasks: &TasksData, width: usize) -> Vec<Span<'static>> {
     spans
 }
 
-pub fn render_load_avg(load: &LoadAverageData, width: usize) -> Vec<Span<'static>> {
-    let mut spans: Vec<Span<'static>> = Vec::new();
-
-    let vals = format!("  {:.2}  {:.2}  {:.2}", load.one, load.five, load.fifteen);
-    let line = format!("Load average:{}", vals);
-    if width < line.len() {
-        spans.push(Span::styled(line, Style::default().fg(Color::White)));
-        return spans;
-    }
-
-    spans.push(Span::styled(
-        "Load average:",
-        Style::default().fg(Color::Cyan),
-    ));
-
-    spans.push(Span::styled(
-        vals,
-        Style::default()
-            .fg(Color::LightBlue)
-            .add_modifier(Modifier::BOLD),
-    ));
-
-    spans
-}
-
+/// Uptime: 80 days, 12:50:48
+///   ^label   ^value
 pub fn render_uptime(uptime: &Duration, width: usize) -> Vec<Span<'static>> {
     let mut spans: Vec<Span<'static>> = Vec::new();
 
-    let uptime_str = format_uptime(*uptime);
-    let line = format!("Uptime: {}", uptime_str);
-    if width < line.len() {
-        spans.push(Span::styled(line, Style::default().fg(Color::White)));
-        return spans;
-    }
-
     spans.push(Span::styled(
         "Uptime: ",
-        Style::default().fg(Color::Cyan),
+        Style::default().fg(Color::DarkCyan),
     ));
 
     spans.push(Span::styled(
-        uptime_str,
+        format_uptime(*uptime),
         Style::default()
             .fg(Color::LightBlue)
             .add_modifier(Modifier::BOLD),
