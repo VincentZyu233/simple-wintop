@@ -22,7 +22,7 @@ pub fn draw(frame: &mut Frame, data: &SystemData, empty_fill: &EmptyFill) {
     let outer = Layout::default()
         .direction(Direction::Vertical)
         .constraints([
-            Constraint::Length(3),
+            Constraint::Length(2),
             Constraint::Min(6),
             Constraint::Length(1),
         ])
@@ -31,11 +31,11 @@ pub fn draw(frame: &mut Frame, data: &SystemData, empty_fill: &EmptyFill) {
     let horz = Layout::default()
         .direction(Direction::Horizontal)
         .constraints([
-            Constraint::Length(3),
+            Constraint::Length(2),
             Constraint::Min(20),
             Constraint::Length(6),
             Constraint::Min(20),
-            Constraint::Length(3),
+            Constraint::Length(2),
         ])
         .split(outer[1]);
 

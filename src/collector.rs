@@ -7,18 +7,21 @@ use crate::data::*;
 
 pub struct Collector {
     system: System,
+    combine: usize,
     cpu_history: VecDeque<f64>,
 }
 
 const MAX_HISTORY: usize = 900;
 
 impl Collector {
-    pub fn new() -> Self {
+    pub fn new(combine: usize) -> Self {
         let mut system = System::new();
         system.refresh_cpu_list(CpuRefreshKind::everything());
         system.refresh_memory();
+        let combine = if combine < 1 { 1 } else { combine };
         Self {
             system,
+            combine,
             cpu_history: VecDeque::with_capacity(MAX_HISTORY),
         }
     }
@@ -32,7 +35,7 @@ impl Collector {
             ProcessRefreshKind::new(),
         );
 
-        let cpus: Vec<CpuData> = self
+        let raw: Vec<CpuData> = self
             .system
             .cpus()
             .iter()
@@ -43,8 +46,10 @@ impl Collector {
             })
             .collect();
 
+        let num_cores = raw.len() as f64;
+        let cpus = group_cpus(&raw, self.combine);
+
         let overall_usage = self.system.global_cpu_usage() as f64;
-        let num_cores = cpus.len() as f64;
         let load_value = if num_cores > 0.0 {
             overall_usage / 100.0 * num_cores
         } else {
@@ -95,4 +100,22 @@ impl Collector {
         let sum: f64 = self.cpu_history.iter().take(n).sum();
         sum / n as f64
     }
+}
+
+fn group_cpus(raw: &[CpuData], combine: usize) -> Vec<CpuData> {
+    if combine <= 1 {
+        return raw.to_vec();
+    }
+    raw.chunks(combine)
+        .enumerate()
+        .map(|(gi, chunk)| {
+            let start = gi * combine;
+            let end = start + chunk.len() - 1;
+            let avg = chunk.iter().map(|c| c.usage).sum::<f64>() / chunk.len() as f64;
+            CpuData {
+                name: format!("{}-{}", start, end),
+                usage: avg,
+            }
+        })
+        .collect()
 }

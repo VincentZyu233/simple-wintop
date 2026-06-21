@@ -19,6 +19,9 @@ struct Args {
 
     #[arg(long = "fill", value_enum, default_value = "space")]
     empty_fill: EmptyFill,
+
+    #[arg(long = "combine", default_value = "1")]
+    combine: usize,
 }
 
 fn main() -> io::Result<()> {
@@ -27,7 +30,7 @@ fn main() -> io::Result<()> {
 
     let mut terminal = ratatui::init();
 
-    let mut collector = Collector::new();
+    let mut collector = Collector::new(args.combine);
     let mut last_tick = Instant::now();
 
     loop {
