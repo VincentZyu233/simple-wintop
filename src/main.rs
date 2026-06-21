@@ -27,26 +27,23 @@ fn main() -> io::Result<()> {
     let mut last_tick = Instant::now();
 
     loop {
-        let data = collector.collect();
-
-        terminal.draw(|frame| ui::draw(frame, &data))?;
-
         let timeout = tick_rate
             .checked_sub(last_tick.elapsed())
             .unwrap_or_default();
 
         if event::poll(timeout)? {
-            if let Event::Key(key) = event::read()? {
-                if key.kind == KeyEventKind::Press {
-                    match key.code {
-                        KeyCode::Char('q') | KeyCode::Char('Q') | KeyCode::Esc => break,
-                        _ => {}
-                    }
-                }
+            match event::read()? {
+                Event::Key(key) if key.kind == KeyEventKind::Press => match key.code {
+                    KeyCode::Char('q') | KeyCode::Char('Q') | KeyCode::Esc => break,
+                    _ => {}
+                },
+                _ => {}
             }
         }
 
         if last_tick.elapsed() >= tick_rate {
+            let data = collector.collect();
+            terminal.draw(|frame| ui::draw(frame, &data))?;
             last_tick = Instant::now();
         }
     }

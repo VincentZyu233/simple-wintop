@@ -57,7 +57,3 @@ cargo build --release
 ```
 
 GitHub Actions automatically builds **Windows x86_64** and **Windows ARM64** binaries on every push.
-
-## 📄 License
-
-📝 MIT — do whatever you want with it! 🎉

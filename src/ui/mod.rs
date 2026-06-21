@@ -14,18 +14,22 @@ use crate::data::SystemData;
 pub fn draw(frame: &mut Frame, data: &SystemData) {
     let area = frame.area();
 
-    if area.height < 10 || area.width < 50 {
+    if area.height < 10 || area.width < 60 {
         draw_too_small(frame, area);
         return;
     }
 
     let horz = Layout::default()
         .direction(Direction::Horizontal)
-        .constraints([Constraint::Percentage(50), Constraint::Percentage(50)])
+        .constraints([
+            Constraint::Min(20),
+            Constraint::Length(6),
+            Constraint::Min(20),
+        ])
         .split(area);
 
     draw_left_column(frame, horz[0], data);
-    draw_right_column(frame, horz[1], data);
+    draw_right_column(frame, horz[2], data);
 }
 
 fn draw_left_column(frame: &mut Frame, area: Rect, data: &SystemData) {

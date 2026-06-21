@@ -57,7 +57,3 @@ cargo build --release
 ```
 
 GitHub Actions 会在每次推送时自动构建 **Windows x86_64** 和 **Windows ARM64** 二进制文件。
-
-## 📄 许可证
-
-📝 MIT — 随便用，随便改！🎉

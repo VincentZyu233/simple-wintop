@@ -3,7 +3,6 @@ name = "htop-rust-for-win"
 version = "0.0.1"
 edition = "2021"
 description = "htop-like system monitor for Windows"
-license = "MIT"
 
 [[bin]]
 name = "htop-rust-for-win"
