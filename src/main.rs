@@ -1,5 +1,6 @@
 mod collector;
 mod data;
+mod debug;
 mod ui;
 
 use std::io;
@@ -7,9 +8,10 @@ use std::time::{Duration, Instant};
 
 use clap::Parser;
 use crossterm::event::{self, Event, KeyCode, KeyEventKind};
+use crossterm::terminal::size;
 
 use collector::Collector;
-use data::{EmptyFill, Margins};
+use data::{EmptyFill, Margins, SystemData};
 
 #[derive(Parser)]
 #[command(name = "simple-wintop", version = concat!("v", env!("CARGO_PKG_VERSION"), " (", env!("TARGET"), ")"))]
@@ -37,16 +39,30 @@ struct Args {
 
     #[arg(long = "margin-center", default_value = "5")]
     margin_center: u16,
+
+    #[arg(long)]
+    debug: bool,
 }
 
 fn main() -> io::Result<()> {
     let args = Args::parse();
     let tick_rate = Duration::from_millis(args.interval);
 
+    let terminal_size = size().ok();
+
     let mut terminal = ratatui::init();
 
     let mut collector = Collector::new(args.combine);
     let mut last_tick = Instant::now();
+    let mut last_data: Option<SystemData> = None;
+
+    let margins = Margins {
+        top: args.margin_top,
+        bottom: args.margin_bottom,
+        left: args.margin_left,
+        right: args.margin_right,
+        center: args.margin_center,
+    };
 
     loop {
         let timeout = tick_rate
@@ -65,18 +81,18 @@ fn main() -> io::Result<()> {
 
         if last_tick.elapsed() >= tick_rate {
             let data = collector.collect();
-            let margins = Margins {
-                top: args.margin_top,
-                bottom: args.margin_bottom,
-                left: args.margin_left,
-                right: args.margin_right,
-                center: args.margin_center,
-            };
-            terminal.draw(|frame| ui::draw(frame, &data, &args.empty_fill, &margins))?;
+            last_data = Some(data);
+            let data = last_data.as_ref().unwrap();
+            terminal.draw(|frame| ui::draw(frame, data, &args.empty_fill, &margins))?;
             last_tick = Instant::now();
         }
     }
 
     ratatui::restore();
+
+    if args.debug {
+        debug::print_debug_info(terminal_size, last_data.as_ref(), &margins, args.interval, args.combine);
+    }
+
     Ok(())
 }

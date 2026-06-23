@@ -29,12 +29,14 @@ fn format_bytes(bytes: u64) -> String {
     }
 }
 
+const BRACKET: Style = Style::new().fg(Color::White);
+
 pub fn render_cpu_bar(cpu: &CpuData, width: usize, fill: &EmptyFill) -> Vec<Span<'static>> {
     let usage = cpu.usage.min(100.0);
     let text = format!("{:>5.1}%", usage);
 
-    let label_style = Style::default()
-        .fg(Color::Cyan)
+    let num_style = Style::default()
+        .fg(Color::Blue)
         .add_modifier(Modifier::BOLD);
 
     let inside_w = width.saturating_sub(cpu.name.len() + 2);
@@ -42,7 +44,8 @@ pub fn render_cpu_bar(cpu: &CpuData, width: usize, fill: &EmptyFill) -> Vec<Span
     let body_w = inside_w.saturating_sub(text_w).min(200);
 
     let mut spans: Vec<Span<'static>> = Vec::new();
-    spans.push(Span::styled(format!("{}[", cpu.name), label_style));
+    spans.push(Span::styled(cpu.name.clone(), num_style));
+    spans.push(Span::styled("[", BRACKET));
 
     if body_w > 0 {
         let filled = (usage / 100.0 * body_w as f64).round() as usize;
@@ -77,7 +80,7 @@ pub fn render_cpu_bar(cpu: &CpuData, width: usize, fill: &EmptyFill) -> Vec<Span
         Style::default().fg(pct_color),
     ));
 
-    spans.push(Span::styled("]", label_style));
+    spans.push(Span::styled("]", BRACKET));
     spans
 }
 
@@ -106,7 +109,8 @@ pub fn render_mem_bar(mem: &MemoryData, width: usize, fill: &EmptyFill) -> Vec<S
     };
 
     let mut spans: Vec<Span<'static>> = Vec::new();
-    spans.push(Span::styled(format!("{}[", label), label_style));
+    spans.push(Span::styled(label, label_style));
+    spans.push(Span::styled("[", BRACKET));
 
     if body_w > 0 {
         let filled = (ratio * body_w as f64).round() as usize;
@@ -134,7 +138,7 @@ pub fn render_mem_bar(mem: &MemoryData, width: usize, fill: &EmptyFill) -> Vec<S
         format!(" {}", text),
         Style::default().fg(text_color),
     ));
-    spans.push(Span::styled("]", label_style));
+    spans.push(Span::styled("]", BRACKET));
     spans
 }
 
@@ -163,7 +167,8 @@ pub fn render_swap_bar(swp: &SwapData, width: usize, fill: &EmptyFill) -> Vec<Sp
     };
 
     let mut spans: Vec<Span<'static>> = Vec::new();
-    spans.push(Span::styled(format!("{}[", label), label_style));
+    spans.push(Span::styled(label, label_style));
+    spans.push(Span::styled("[", BRACKET));
 
     if body_w > 0 {
         let filled = (ratio * body_w as f64).round() as usize;
@@ -191,6 +196,6 @@ pub fn render_swap_bar(swp: &SwapData, width: usize, fill: &EmptyFill) -> Vec<Sp
         format!(" {}", text),
         Style::default().fg(text_color),
     ));
-    spans.push(Span::styled("]", label_style));
+    spans.push(Span::styled("]", BRACKET));
     spans
 }

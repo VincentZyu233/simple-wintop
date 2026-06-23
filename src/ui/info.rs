@@ -65,7 +65,7 @@ pub fn render_uptime(uptime: &Duration, _width: usize) -> Vec<Span<'static>> {
     spans.push(Span::styled(
         format_uptime(*uptime),
         Style::default()
-            .fg(Color::LightBlue)
+            .fg(Color::LightCyan)
             .add_modifier(Modifier::BOLD),
     ));
 

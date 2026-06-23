@@ -91,7 +91,6 @@ fn draw_right_column(frame: &mut Frame, area: Rect, data: &SystemData, empty_fil
     }
     rows.push(Constraint::Length(1));
     rows.push(Constraint::Length(1));
-    rows.push(Constraint::Length(1));
     rows.push(Constraint::Min(0));
 
     let chunks = Layout::default()
