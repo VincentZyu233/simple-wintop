@@ -36,6 +36,14 @@ pub struct LoadAverageData {
     pub fifteen: f64,
 }
 
+pub struct Margins {
+    pub top: u16,
+    pub bottom: u16,
+    pub left: u16,
+    pub right: u16,
+    pub center: u16,
+}
+
 #[derive(Clone, Copy, Debug, PartialEq, Eq, clap::ValueEnum)]
 pub enum EmptyFill {
     Space,

@@ -19,7 +19,6 @@
 - ⏳ **Uptime** — system uptime since last boot 🕒
 - ⌨️ **Keyboard shortcuts** — `q` / `Esc` to quit, instant and responsive 🎯
 - 🎨 **Colorful TUI** — powered by [ratatui](https://github.com/ratatui-org/ratatui) + [crossterm](https://github.com/crossterm-rs/crossterm) ✨
-- 🪟 **Windows only** — built natively for x86_64 and ARM64 🏗️
 
 ## 🖼️ Screenshot
 
@@ -34,6 +33,8 @@ simple-wintop --help
 simple-wintop
 # ⏱️ Set custom refresh interval (in milliseconds)
 simple-wintop -t 500
+# 📏 Compact layout — zero outer margins, narrow center gap
+simple-wintop --margin-top 0 --margin-bottom 0 --margin-left 0 --margin-right 0 --margin-center 2
 # ℹ️ Show version
 simple-wintop --version
 ```
@@ -43,6 +44,11 @@ simple-wintop --version
 | Flag | Description |
 |------|-------------|
 | `-t, --interval <ms>` | Refresh interval in milliseconds (default: 1000) |
+| `--margin-top <n>` | Top margin rows (default: 1) |
+| `--margin-bottom <n>` | Bottom margin rows (default: 0) |
+| `--margin-left <n>` | Left margin columns (default: 1) |
+| `--margin-right <n>` | Right margin columns (default: 1) |
+| `--margin-center <n>` | Center gap between left/right columns (default: 5) |
 | `--help` | Print help message |
 | `--version` | Print version info |
 

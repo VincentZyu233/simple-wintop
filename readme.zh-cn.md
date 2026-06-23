@@ -19,7 +19,6 @@
 - ⏳ **开机时间** — 系统自上次启动以来的运行时长 🕒
 - ⌨️ **键盘快捷键** — `q` / `Esc` 退出，即时响应 🎯
 - 🎨 **多彩 TUI** — 基于 [ratatui](https://github.com/ratatui-org/ratatui) + [crossterm](https://github.com/crossterm-rs/crossterm) ✨
-- 🪟 **仅限 Windows** — 原生构建 x86_64 和 ARM64 🏗️
 
 ## 🖼️ 屏幕截图
 
@@ -34,6 +33,8 @@ simple-wintop --help
 simple-wintop
 # ⏱️ 设置自定义刷新间隔（毫秒）
 simple-wintop -t 500
+# 📏 紧凑布局 — 零外边距，窄中间间距
+simple-wintop --margin-top 0 --margin-bottom 0 --margin-left 0 --margin-right 0 --margin-center 2
 # ℹ️ 查看版本
 simple-wintop --version
 ```
@@ -43,6 +44,11 @@ simple-wintop --version
 | 选项 | 说明 |
 |------|------|
 | `-t, --interval <毫秒>` | 刷新间隔（默认：1000） |
+| `--margin-top <n>` | 顶部空白行数（默认：1） |
+| `--margin-bottom <n>` | 底部空白行数（默认：0） |
+| `--margin-left <n>` | 左侧空白列数（默认：1） |
+| `--margin-right <n>` | 右侧空白列数（默认：1） |
+| `--margin-center <n>` | 左右两栏中间间距（默认：5） |
 | `--help` | 打印帮助信息 |
 | `--version` | 打印版本信息 |
 

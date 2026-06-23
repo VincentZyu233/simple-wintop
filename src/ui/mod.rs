@@ -9,12 +9,16 @@ use ratatui::{
     Frame,
 };
 
-use crate::data::{EmptyFill, SystemData};
+use crate::data::{EmptyFill, Margins, SystemData};
 
-pub fn draw(frame: &mut Frame, data: &SystemData, empty_fill: &EmptyFill) {
+pub fn draw(frame: &mut Frame, data: &SystemData, empty_fill: &EmptyFill, margins: &Margins) {
     let area = frame.area();
 
-    if area.height < 12 || area.width < 60 {
+    let min_content_height = 6u16;
+    let min_content_width = 20u16 + margins.center + 20u16;
+    if area.height < (margins.top + min_content_height + margins.bottom)
+        || area.width < (margins.left + min_content_width + margins.right)
+    {
         draw_too_small(frame, area);
         return;
     }
@@ -22,20 +26,20 @@ pub fn draw(frame: &mut Frame, data: &SystemData, empty_fill: &EmptyFill) {
     let outer = Layout::default()
         .direction(Direction::Vertical)
         .constraints([
-            Constraint::Length(2),
+            Constraint::Length(margins.top),
             Constraint::Min(6),
-            Constraint::Length(1),
+            Constraint::Length(margins.bottom),
         ])
         .split(area);
 
     let horz = Layout::default()
         .direction(Direction::Horizontal)
         .constraints([
-            Constraint::Length(2),
+            Constraint::Length(margins.left),
             Constraint::Min(20),
-            Constraint::Length(6),
+            Constraint::Length(margins.center),
             Constraint::Min(20),
-            Constraint::Length(2),
+            Constraint::Length(margins.right),
         ])
         .split(outer[1]);
 

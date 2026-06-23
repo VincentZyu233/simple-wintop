@@ -9,7 +9,7 @@ use clap::Parser;
 use crossterm::event::{self, Event, KeyCode, KeyEventKind};
 
 use collector::Collector;
-use data::EmptyFill;
+use data::{EmptyFill, Margins};
 
 #[derive(Parser)]
 #[command(name = "simple-wintop", version = concat!("v", env!("CARGO_PKG_VERSION"), " (", env!("TARGET"), ")"))]
@@ -22,6 +22,21 @@ struct Args {
 
     #[arg(long = "combine", default_value = "1")]
     combine: usize,
+
+    #[arg(long = "margin-top", default_value = "1")]
+    margin_top: u16,
+
+    #[arg(long = "margin-bottom", default_value = "0")]
+    margin_bottom: u16,
+
+    #[arg(long = "margin-left", default_value = "1")]
+    margin_left: u16,
+
+    #[arg(long = "margin-right", default_value = "1")]
+    margin_right: u16,
+
+    #[arg(long = "margin-center", default_value = "5")]
+    margin_center: u16,
 }
 
 fn main() -> io::Result<()> {
@@ -50,7 +65,14 @@ fn main() -> io::Result<()> {
 
         if last_tick.elapsed() >= tick_rate {
             let data = collector.collect();
-            terminal.draw(|frame| ui::draw(frame, &data, &args.empty_fill))?;
+            let margins = Margins {
+                top: args.margin_top,
+                bottom: args.margin_bottom,
+                left: args.margin_left,
+                right: args.margin_right,
+                center: args.margin_center,
+            };
+            terminal.draw(|frame| ui::draw(frame, &data, &args.empty_fill, &margins))?;
             last_tick = Instant::now();
         }
     }
