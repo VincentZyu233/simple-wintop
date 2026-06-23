@@ -1,6 +1,6 @@
-# 🖥️ htop-rust-for-win 🦀
+# 🖥️ simple-wintop 🦀
 
-[![Windows x64 | ARM64](https://img.shields.io/badge/Windows-x64_|_ARM64-0078D4?style=for-the-badge&logo=windows&logoColor=white)](https://github.com/VincentZyuApps/htop-rust-for-win/releases)
+[![Windows x64 | ARM64](https://img.shields.io/badge/Windows-x64_|_ARM64-0078D4?style=for-the-badge&logo=windows&logoColor=white)](https://github.com/VincentZyuApps/simple-wintop/releases)
 
 > 🌟 轻量级实时 **系统监控仪表盘**，专为 Windows 打造 — 灵感来自 [htop](https://github.com/htop-dev/htop) 🚀
 > 完美复刻 **顶部仪表盘区域** — CPU 条形图 🧠、内存与交换空间使用率 🫧、任务计数器 🔢、开机时间 ⏱ — 全部呈现在多彩 TUI 中 🎨。
@@ -26,16 +26,16 @@
 
 ```bash
 # 📖 查看帮助
-htop-rust-for-win --help
+simple-wintop --help
 
 # 🎯 默认仪表盘 — CPU、内存、交换、任务、开机时间
-htop-rust-for-win
+simple-wintop
 
 # ⏱ 设置自定义刷新间隔（毫秒）
-htop-rust-for-win -t 500
+simple-wintop -t 500
 
 # ℹ️ 查看版本
-htop-rust-for-win --version
+simple-wintop --version
 ```
 
 ## ⚙️ 常用选项

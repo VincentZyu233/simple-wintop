@@ -1,6 +1,6 @@
-# 🖥️ htop-rust-for-win 🦀
+# 🖥️ simple-wintop 🦀
 
-[![Windows x64 | ARM64](https://img.shields.io/badge/Windows-x64_|_ARM64-0078D4?style=for-the-badge&logo=windows&logoColor=white)](https://github.com/VincentZyuApps/htop-rust-for-win/releases)
+[![Windows x64 | ARM64](https://img.shields.io/badge/Windows-x64_|_ARM64-0078D4?style=for-the-badge&logo=windows&logoColor=white)](https://github.com/VincentZyuApps/simple-wintop/releases)
 
 > 🌟 A lightweight, real-time **system monitor dashboard** for Windows — inspired by [htop](https://github.com/htop-dev/htop) 🚀
 > Purely the **top meters section** — CPU bars 🧠, Memory & Swap usage 🫧, Tasks counter 🔢, and Uptime ⏱ — all in a beautiful multi‑color TUI 🎨.
@@ -26,16 +26,16 @@
 
 ```bash
 # 📖 Show help
-htop-rust-for-win --help
+simple-wintop --help
 
 # 🎯 Default dashboard — CPU, Memory, Swap, Tasks, Uptime
-htop-rust-for-win
+simple-wintop
 
 # ⏱ Set custom refresh interval (in milliseconds)
-htop-rust-for-win -t 500
+simple-wintop -t 500
 
 # ℹ️ Show version
-htop-rust-for-win --version
+simple-wintop --version
 ```
 
 ## ⚙️ Common Flags

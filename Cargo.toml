@@ -1,11 +1,11 @@
 [package]
-name = "htop-rust-for-win"
-version = "0.0.7"
+name = "simple-wintop"
+version = "0.0.8"
 edition = "2021"
 description = "htop-like system monitor for Windows"
 
 [[bin]]
-name = "htop-rust-for-win"
+name = "simple-wintop"
 path = "src/main.rs"
 
 [dependencies]

@@ -12,7 +12,7 @@ use collector::Collector;
 use data::EmptyFill;
 
 #[derive(Parser)]
-#[command(name = "htop-rust-for-win", version = concat!("v", env!("CARGO_PKG_VERSION"), " (", env!("TARGET"), ")"))]
+#[command(name = "simple-wintop", version = concat!("v", env!("CARGO_PKG_VERSION"), " (", env!("TARGET"), ")"))]
 struct Args {
     #[arg(short = 't', long = "interval", default_value = "1000")]
     interval: u64,

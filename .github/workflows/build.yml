@@ -64,13 +64,13 @@ jobs:
         include:
           - target: x86_64-pc-windows-msvc
             name: windows-x86_64
-            binary: htop-rust-for-win.exe
-            asset: htop-rust-for-win-x86_64.exe
+            binary: simple-wintop.exe
+            asset: simple-wintop-x86_64.exe
 
           - target: aarch64-pc-windows-msvc
             name: windows-arm64
-            binary: htop-rust-for-win.exe
-            asset: htop-rust-for-win-arm64.exe
+            binary: simple-wintop.exe
+            asset: simple-wintop-arm64.exe
 
     steps:
       - name: Checkout
@@ -144,9 +144,9 @@ jobs:
           sleep 3
 
           echo "📤 Uploading files:"
-          ls htop-rust-for-win-*
+          ls simple-wintop-*
           gh release create "$VERSION" \
-            --title "htop-rust-for-win ${VERSION}" \
+            --title "simple-wintop ${VERSION}" \
             --generate-notes \
             --latest \
-            htop-rust-for-win-*
+            simple-wintop-*
