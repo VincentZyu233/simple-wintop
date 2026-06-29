@@ -31,7 +31,16 @@ fn format_bytes(bytes: u64) -> String {
 
 const BRACKET: Style = Style::new().fg(Color::White);
 
-pub fn render_cpu_bar(cpu: &CpuData, width: usize, fill: &EmptyFill) -> Vec<Span<'static>> {
+fn padded_label(label: &str, width: usize) -> String {
+    format!("{label:>width$}")
+}
+
+pub fn render_cpu_bar(
+    cpu: &CpuData,
+    width: usize,
+    label_width: usize,
+    fill: &EmptyFill,
+) -> Vec<Span<'static>> {
     let usage = cpu.usage.min(100.0);
     let text = format!("{:>5.1}%", usage);
 
@@ -39,12 +48,13 @@ pub fn render_cpu_bar(cpu: &CpuData, width: usize, fill: &EmptyFill) -> Vec<Span
         .fg(Color::Blue)
         .add_modifier(Modifier::BOLD);
 
-    let inside_w = width.saturating_sub(cpu.name.len() + 2);
+    let label = padded_label(&cpu.name, label_width);
+    let inside_w = width.saturating_sub(label.len() + 2);
     let text_w = text.len() + 1;
     let body_w = inside_w.saturating_sub(text_w).min(200);
 
     let mut spans: Vec<Span<'static>> = Vec::new();
-    spans.push(Span::styled(cpu.name.clone(), num_style));
+    spans.push(Span::styled(label, num_style));
     spans.push(Span::styled("[", BRACKET));
 
     if body_w > 0 {
@@ -84,9 +94,14 @@ pub fn render_cpu_bar(cpu: &CpuData, width: usize, fill: &EmptyFill) -> Vec<Span
     spans
 }
 
-pub fn render_mem_bar(mem: &MemoryData, width: usize, fill: &EmptyFill) -> Vec<Span<'static>> {
+pub fn render_mem_bar(
+    mem: &MemoryData,
+    width: usize,
+    label_width: usize,
+    fill: &EmptyFill,
+) -> Vec<Span<'static>> {
     let text = format!("{}/{}", format_bytes(mem.used), format_bytes(mem.total));
-    let label = "Mem";
+    let label = padded_label("Mem", label_width);
     let label_style = Style::default()
         .fg(Color::Cyan)
         .add_modifier(Modifier::BOLD);
@@ -144,9 +159,14 @@ pub fn render_mem_bar(mem: &MemoryData, width: usize, fill: &EmptyFill) -> Vec<S
     spans
 }
 
-pub fn render_swap_bar(swp: &SwapData, width: usize, fill: &EmptyFill) -> Vec<Span<'static>> {
+pub fn render_swap_bar(
+    swp: &SwapData,
+    width: usize,
+    label_width: usize,
+    fill: &EmptyFill,
+) -> Vec<Span<'static>> {
     let text = format!("{}/{}", format_bytes(swp.used), format_bytes(swp.total));
-    let label = "Swp";
+    let label = padded_label("Swp", label_width);
     let label_style = Style::default()
         .fg(Color::Cyan)
         .add_modifier(Modifier::BOLD);

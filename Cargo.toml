@@ -1,6 +1,6 @@
 [package]
 name = "simple-wintop"
-version = "0.2.2"
+version = "0.2.3"
 edition = "2021"
 description = "📊🦀 htop-inspired Windows system monitor — CPU bars, Memory & Swap, Tasks, Uptime in a colorful TUI (Rust + ratatui) | 📊🦀 受 htop 启发的 Windows 系统监控仪表盘 — CPU 条形图、内存与交换、任务计数、开机时间，多彩 TUI（Rust + ratatui）"
 license = "MIT"

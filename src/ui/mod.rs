@@ -43,11 +43,27 @@ pub fn draw(frame: &mut Frame, data: &SystemData, empty_fill: &EmptyFill, margin
         ])
         .split(outer[1]);
 
-    draw_left_column(frame, horz[1], data, empty_fill);
-    draw_right_column(frame, horz[3], data, empty_fill);
+    let label_width = meter_label_width(data);
+    draw_left_column(frame, horz[1], data, empty_fill, label_width);
+    draw_right_column(frame, horz[3], data, empty_fill, label_width);
 }
 
-fn draw_left_column(frame: &mut Frame, area: Rect, data: &SystemData, empty_fill: &EmptyFill) {
+fn meter_label_width(data: &SystemData) -> usize {
+    data.cpus
+        .iter()
+        .map(|cpu| cpu.name.len())
+        .chain(["Mem".len(), "Swp".len()])
+        .max()
+        .unwrap_or(3)
+}
+
+fn draw_left_column(
+    frame: &mut Frame,
+    area: Rect,
+    data: &SystemData,
+    empty_fill: &EmptyFill,
+    label_width: usize,
+) {
     let n_cpus = data.cpus.len();
     let n_left = (n_cpus + 1) / 2;
 
@@ -65,22 +81,38 @@ fn draw_left_column(frame: &mut Frame, area: Rect, data: &SystemData, empty_fill
         .split(area);
 
     for (i, cpu) in data.cpus.iter().take(n_left).enumerate() {
-        let spans = bars::render_cpu_bar(cpu, chunks[i].width as usize, empty_fill);
+        let spans = bars::render_cpu_bar(cpu, chunks[i].width as usize, label_width, empty_fill);
         frame.render_widget(Paragraph::new(Line::from(spans)), chunks[i]);
     }
 
     let off = n_left;
     frame.render_widget(
-        Paragraph::new(Line::from(bars::render_mem_bar(&data.memory, chunks[off].width as usize, empty_fill))),
+        Paragraph::new(Line::from(bars::render_mem_bar(
+            &data.memory,
+            chunks[off].width as usize,
+            label_width,
+            empty_fill,
+        ))),
         chunks[off],
     );
     frame.render_widget(
-        Paragraph::new(Line::from(bars::render_swap_bar(&data.swap, chunks[off + 1].width as usize, empty_fill))),
+        Paragraph::new(Line::from(bars::render_swap_bar(
+            &data.swap,
+            chunks[off + 1].width as usize,
+            label_width,
+            empty_fill,
+        ))),
         chunks[off + 1],
     );
 }
 
-fn draw_right_column(frame: &mut Frame, area: Rect, data: &SystemData, empty_fill: &EmptyFill) {
+fn draw_right_column(
+    frame: &mut Frame,
+    area: Rect,
+    data: &SystemData,
+    empty_fill: &EmptyFill,
+    label_width: usize,
+) {
     let n_cpus = data.cpus.len();
     let n_right = n_cpus / 2;
     let n_left = (n_cpus + 1) / 2;
@@ -99,7 +131,7 @@ fn draw_right_column(frame: &mut Frame, area: Rect, data: &SystemData, empty_fil
         .split(area);
 
     for (i, cpu) in data.cpus.iter().skip(n_left).enumerate() {
-        let spans = bars::render_cpu_bar(cpu, chunks[i].width as usize, empty_fill);
+        let spans = bars::render_cpu_bar(cpu, chunks[i].width as usize, label_width, empty_fill);
         frame.render_widget(Paragraph::new(Line::from(spans)), chunks[i]);
     }
 
